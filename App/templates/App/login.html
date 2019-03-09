@@ -1,0 +1,49 @@
+{% extends 'base.html' %} {% block content %} {% if form.errors %}
+<p class="alert alert-danger" role="alert"><span class="alert-inner--icon"><i class="ni ni-like-2"></i></span>Your username and password didn't match. Please try again.</p>
+{% endif %} {% if next %} {% if user.is_authenticated %}
+<p>Your account doesn't have access to this page. To proceed, please login with an account that has access.</p>
+{% else %}
+<!-- <p>Please login to see this page.</p> -->
+{% endif %} {% endif %}
+
+
+<div class="container pt-lg-md">
+    <div class="row justify-content-center">
+        <div class="col-lg-5">
+            <div class="card bg-secondary shadow border-0">
+                <div class="card-header bg-white pb-5">
+                    <h1 class="panel-title">Please Sign In</h1>
+                </div>
+                <div class="">
+                    <form method="post" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <p class="bs-component">
+                            <table>
+                                <tr>
+                                    <td>{{ form.username.label_tag }}</td>
+                                    <td>{{ form.username }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ form.password.label_tag }}</td>
+                                    <td>{{ form.password }}</td>
+                                </tr>
+                            </table>
+                        </p>
+                        <p class="bs-component">
+                            <center>
+                                <input class="btn btn-success btn-sm" type="submit" value="Login" />
+                            </center>
+                        </p>
+                        <input type="hidden" name="next" value="{{ next }}" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} {% block javascript %}
+<script>
+    {% if not user.is_authenticated %}
+    $("ul.nav.navbar-nav.navbar-right").css("display", "none"); {% endif %}
+</script>
+{% endblock %}
